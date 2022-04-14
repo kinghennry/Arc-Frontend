@@ -17,6 +17,7 @@ import {
   Container,
 } from "@material-ui/core";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
+import { ThreeDots } from "react-loader-spinner";
 
 const initialState = {
   firstName: "",
@@ -41,7 +42,7 @@ function Login() {
     setFormData({ ...formData, [name]: value });
   };
 
-  const { error, user } = useSelector((state) => ({ ...state.auth }));
+  const { error, user, loading } = useSelector((state) => ({ ...state.auth }));
   const handleShowPassword = () => setShowPassword(!showPassword);
   useEffect(() => {
     error && toast.error(error);
@@ -132,7 +133,17 @@ function Login() {
             <div className={styles.buttons}>
               <div>
                 <button className={styles.submitBtn}>
-                  {isSignup ? "Sign Up" : "Sign In"}
+                  {loading && (
+                    <ThreeDots
+                      height="20"
+                      width="20"
+                      color="blue"
+                      ariaLabel="loading"
+                    />
+                  )}
+                  <span style={{ marginLeft: "10px" }}>
+                    {isSignup ? "Sign Up" : "Sign In"}
+                  </span>
                 </button>
               </div>
               <div>

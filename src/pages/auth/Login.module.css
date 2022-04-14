@@ -55,6 +55,9 @@
   width: 100%;
   color: rgb(51, 51, 216);
   display: inline-block;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   padding: 15px 20px;
   background-color: white;
   text-align: center;
