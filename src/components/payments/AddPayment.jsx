@@ -1,0 +1,14 @@
+import React, { useState } from "react";
+import Modal from "./Modal";
+
+function AddPayment() {
+  const [open, setOpen] = useState();
+
+  return (
+    <div>
+      <Modal open={open} setOpen={setOpen} />
+    </div>
+  );
+}
+
+export default AddPayment;
