@@ -1,3 +1,4 @@
+/* eslint-disable import/no-named-as-default */
 import React, { useState, useEffect } from "react";
 import styles from "./Invoice.module.css";
 import { SEO } from "../../components";
@@ -36,11 +37,7 @@ import {
   KeyboardDatePicker,
 } from "@material-ui/pickers";
 import { toast } from "react-toastify";
-import {
-  createInvoice,
-  updateInvoice,
-  getInvoice,
-} from "../../features/invoiceSlice";
+import { createInvoice, updateInvoice } from "../../features/invoiceSlice";
 import { getClientsByUser } from "../../features/clientSlice";
 
 const useStyles = makeStyles((theme) => ({
@@ -86,27 +83,25 @@ function Invoice() {
   const dispatch = useDispatch();
   const userId = user?.result?._id;
   const { userClients } = useSelector((state) => state.client);
-  const { error, invoice } = useSelector((state) => ({
+  const { error, userInvoices } = useSelector((state) => ({
     ...state.invoice,
   }));
   const { id } = useParams();
 
   useEffect(() => {
-    dispatch(getInvoice(id));
-    // eslint-disable-next-line
-  }, [id]);
-
-  useEffect(() => {
-    if (invoice) {
-      //Automatically set the default invoice values as the ones in the invoice to be updated
-      setInvoiceData(invoice);
-      setRates(invoice.rates);
-      setClient(invoice.client);
-      setType(invoice.type);
-      setStatus(invoice.status);
-      setSelectedDate(invoice.dueDate);
+    if (id) {
+      const singleInvoice = userInvoices.find(
+        (userInvoice) => userInvoice._id === id
+      );
+      setInvoiceData({ ...singleInvoice });
+      setRates(singleInvoice.rates);
+      setClient(singleInvoice.client);
+      setType(singleInvoice.type);
+      setStatus(singleInvoice.status);
+      setSelectedDate(singleInvoice.dueDate);
     }
-  }, [invoice]);
+    //eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [id]);
 
   const clients = userClients;
 
@@ -145,9 +140,11 @@ function Invoice() {
 
   // Change handler for dynamically added input field
   const handleChange = (index, e) => {
-    const values = [...invoiceData.items];
-    values[index][e.target.name] = e.target.value;
+    const values = [...invoiceData?.items];
+    let { name, value } = e.target;
+    values[index][name] = value;
     setInvoiceData({ ...invoiceData, items: values });
+    // setInvoiceData({ ...invoiceData, [name]: values });
   };
 
   useEffect(() => {
@@ -183,7 +180,7 @@ function Invoice() {
     setInvoiceData((prevState) => ({
       ...prevState,
       items: [
-        ...prevState.items,
+        ...prevState?.items,
         { itemName: "", unitPrice: "", quantity: "", discount: "", amount: "" },
       ],
     }));
@@ -291,7 +288,7 @@ function Invoice() {
                       renderInput={(params) => (
                         <TextField
                           {...params}
-                          // required={!invoice && true}
+                          //   required={!invoice && true}
                           label="Select Customer"
                           margin="normal"
                           variant="outlined"
@@ -364,80 +361,81 @@ function Invoice() {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {invoiceData?.items.map((itemField, index) => (
-                    <TableRow key={index}>
-                      <TableCell scope="row" style={{ width: "40%" }}>
-                        {" "}
-                        <InputBase
-                          style={{ width: "100%" }}
-                          outline="none"
-                          sx={{ ml: 1, flex: 1 }}
-                          type="text"
-                          name="itemName"
-                          onChange={(e) => handleChange(index, e)}
-                          value={itemField.itemName}
-                          placeholder="Item name or description"
-                        />{" "}
-                      </TableCell>
-                      <TableCell align="right">
-                        {" "}
-                        <InputBase
-                          sx={{ ml: 1, flex: 1 }}
-                          type="number"
-                          name="quantity"
-                          onChange={(e) => handleChange(index, e)}
-                          value={itemField.quantity}
-                          placeholder="0"
-                        />{" "}
-                      </TableCell>
-                      <TableCell align="right">
-                        {" "}
-                        <InputBase
-                          sx={{ ml: 1, flex: 1 }}
-                          type="number"
-                          name="unitPrice"
-                          onChange={(e) => handleChange(index, e)}
-                          value={itemField.unitPrice}
-                          placeholder="0"
-                        />{" "}
-                      </TableCell>
-                      <TableCell align="right">
-                        {" "}
-                        <InputBase
-                          sx={{ ml: 1, flex: 1 }}
-                          type="number"
-                          name="discount"
-                          onChange={(e) => handleChange(index, e)}
-                          value={itemField.discount}
-                          placeholder="0"
-                        />{" "}
-                      </TableCell>
-                      <TableCell align="right">
-                        {" "}
-                        <InputBase
-                          sx={{ ml: 1, flex: 1 }}
-                          type="number"
-                          name="amount"
-                          onChange={(e) => handleChange(index, e)}
-                          value={
-                            itemField.quantity * itemField.unitPrice -
-                            (itemField.quantity *
-                              itemField.unitPrice *
-                              itemField.discount) /
-                              100
-                          }
-                          disabled
-                        />{" "}
-                      </TableCell>
-                      <TableCell align="right">
-                        <IconButton onClick={() => handleRemoveField(index)}>
-                          <DeleteOutlineRoundedIcon
-                            style={{ width: "20px", height: "20px" }}
-                          />
-                        </IconButton>
-                      </TableCell>
-                    </TableRow>
-                  ))}
+                  {invoiceData &&
+                    invoiceData?.items?.map((itemField, index) => (
+                      <TableRow key={index}>
+                        <TableCell scope="row" style={{ width: "40%" }}>
+                          {" "}
+                          <InputBase
+                            style={{ width: "100%" }}
+                            outline="none"
+                            sx={{ ml: 1, flex: 1 }}
+                            type="text"
+                            name="itemName"
+                            onChange={(e) => handleChange(index, e)}
+                            value={itemField?.itemName}
+                            placeholder="Item name or description"
+                          />{" "}
+                        </TableCell>
+                        <TableCell align="right">
+                          {" "}
+                          <InputBase
+                            sx={{ ml: 1, flex: 1 }}
+                            type="number"
+                            name="quantity"
+                            onChange={(e) => handleChange(index, e)}
+                            value={itemField?.quantity}
+                            placeholder="0"
+                          />{" "}
+                        </TableCell>
+                        <TableCell align="right">
+                          {" "}
+                          <InputBase
+                            sx={{ ml: 1, flex: 1 }}
+                            type="number"
+                            name="unitPrice"
+                            onChange={(e) => handleChange(index, e)}
+                            value={itemField?.unitPrice}
+                            placeholder="0"
+                          />{" "}
+                        </TableCell>
+                        <TableCell align="right">
+                          {" "}
+                          <InputBase
+                            sx={{ ml: 1, flex: 1 }}
+                            type="number"
+                            name="discount"
+                            onChange={(e) => handleChange(index, e)}
+                            value={itemField?.discount}
+                            placeholder="0"
+                          />{" "}
+                        </TableCell>
+                        <TableCell align="right">
+                          {" "}
+                          <InputBase
+                            sx={{ ml: 1, flex: 1 }}
+                            type="number"
+                            name="amount"
+                            onChange={(e) => handleChange(index, e)}
+                            value={
+                              itemField?.quantity * itemField?.unitPrice -
+                              (itemField?.quantity *
+                                itemField?.unitPrice *
+                                itemField?.discount) /
+                                100
+                            }
+                            disabled
+                          />{" "}
+                        </TableCell>
+                        <TableCell align="right">
+                          <IconButton onClick={() => handleRemoveField(index)}>
+                            <DeleteOutlineRoundedIcon
+                              style={{ width: "20px", height: "20px" }}
+                            />
+                          </IconButton>
+                        </TableCell>
+                      </TableRow>
+                    ))}
                 </TableBody>
               </Table>
             </TableContainer>
@@ -536,7 +534,7 @@ function Invoice() {
               className={classes.button}
               startIcon={<SaveIcon />}
             >
-              Save and Continue
+              {id ? "Edit  and Continue" : "Save and Continue"}
             </Button>
           </Grid>
         </form>

@@ -12,7 +12,6 @@ import {
   InvoiceDetail,
   Invoices,
   Login,
-  //   Settings,
 } from "./pages";
 import { setUser } from "./features/authSlice";
 import { useDispatch } from "react-redux";
@@ -55,11 +54,7 @@ const App = () => {
             {!account ? <Home /> : <Redirect to="/dashboard" />}
           </Route>
           <Route exact path="/login">
-            {/* {account || googleAccount ? (
-              <Redirect to="/dashboard" />
-            ) : ( */}
             <Login />
-            {/* )} */}
           </Route>
           <Route exact path="/dashboard">
             <ProtectedRoute>
@@ -69,6 +64,11 @@ const App = () => {
           <Route exact path="/customers">
             <ProtectedRoute>
               <ClientList />
+            </ProtectedRoute>
+          </Route>
+          <Route exact path="/invoice">
+            <ProtectedRoute>
+              <Invoice />
             </ProtectedRoute>
           </Route>
           <Route exact path="/edit/invoice/:id">
@@ -81,21 +81,12 @@ const App = () => {
               <InvoiceDetail />
             </ProtectedRoute>
           </Route>
-          <Route exact path="/invoice">
-            <ProtectedRoute>
-              <Invoice />
-            </ProtectedRoute>
-          </Route>
           <Route exact path="/invoices">
             <ProtectedRoute>
               <Invoices />
             </ProtectedRoute>
           </Route>
-          {/* <Route exact path="/settings">
-            <ProtectedRoute>
-              <Settings />
-            </ProtectedRoute>
-          </Route> */}
+
           <Redirect exact from="/new-invoice" to="/invoice" />
         </Switch>
         <Footer />

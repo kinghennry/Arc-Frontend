@@ -52,13 +52,13 @@ export const deleteInvoice = (id) => API.delete(`/invoices/${id}`);
 
 //profiles
 //createProfile
-export const createProfile = (updatedFormData) =>
-  API.post("/profiles", updatedFormData);
+// export const createProfile = (updatedFormData) =>
+//   API.post("/profiles", updatedFormData);
 //getProfilesByUser
 
-export const getProfileByUser = (userId) =>
-  API.get(`/profiles/creator/${userId}`);
+// export const getProfileByUser = (userId) =>
+//   API.get(`/profiles/creator/${userId}`);
 
 //edit profile
-export const updateProfile = (updatedFormData, id) =>
-  API.patch(`/profiles/${id}`, updatedFormData);
+// export const updateProfile = (updatedFormData, id) =>
+//   API.patch(`/profiles/${id}`, updatedFormData);

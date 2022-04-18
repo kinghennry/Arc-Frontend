@@ -67,7 +67,7 @@ const InvoiceItem = ({
         {invoiceNumber}
       </TableCell>
       <TableCell style={tableStyle} onClick={() => openInvoice(_id)}>
-        {client.name}{" "}
+        {client?.name}{" "}
       </TableCell>
       <TableCell style={tableStyle} onClick={() => openInvoice(_id)}>
         {currency} {total ? toCommas(total) : total}{" "}

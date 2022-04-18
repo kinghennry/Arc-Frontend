@@ -157,14 +157,14 @@ const InvoiceDetail = () => {
     <React.Fragment>
       <SEO title="Invoice Detail" />
       <div className={styles.PageLayout}>
-        {invoice.creator === user?.result?._id && (
+        {invoice?.creator === user?.result?._id && (
           <div className={styles.buttons}>
             <button
               className={styles.btn}
               onClick={() => editInvoice(invoiceData._id)}
             >
               <BorderColorIcon style={iconSize} />
-              Edit Invoice
+              Edit Invoice Status
             </button>
             <button
               // disabled={status === 'Paid' ? true : false}
@@ -339,71 +339,72 @@ const InvoiceDetail = () => {
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    {invoiceData?.items?.map((itemField, index) => (
-                      <TableRow key={index}>
-                        <TableCell scope="row" style={{ width: "40%" }}>
-                          {" "}
-                          <InputBase
-                            style={{ width: "100%" }}
-                            outline="none"
-                            sx={{ ml: 1, flex: 1 }}
-                            type="text"
-                            name="itemName"
-                            value={itemField.itemName}
-                            placeholder="Item name or description"
-                            readOnly
-                          />{" "}
-                        </TableCell>
-                        <TableCell align="right">
-                          {" "}
-                          <InputBase
-                            sx={{ ml: 1, flex: 1 }}
-                            type="number"
-                            name="quantity"
-                            value={itemField?.quantity}
-                            placeholder="0"
-                            readOnly
-                          />{" "}
-                        </TableCell>
-                        <TableCell align="right">
-                          {" "}
-                          <InputBase
-                            sx={{ ml: 1, flex: 1 }}
-                            type="number"
-                            name="unitPrice"
-                            value={itemField?.unitPrice}
-                            placeholder="0"
-                            readOnly
-                          />{" "}
-                        </TableCell>
-                        <TableCell align="right">
-                          {" "}
-                          <InputBase
-                            sx={{ ml: 1, flex: 1 }}
-                            type="number"
-                            name="discount"
-                            value={itemField?.discount}
-                            readOnly
-                          />{" "}
-                        </TableCell>
-                        <TableCell align="right">
-                          {" "}
-                          <InputBase
-                            sx={{ ml: 1, flex: 1 }}
-                            type="number"
-                            name="amount"
-                            value={
-                              itemField?.quantity * itemField.unitPrice -
-                              (itemField.quantity *
-                                itemField.unitPrice *
-                                itemField.discount) /
-                                100
-                            }
-                            readOnly
-                          />{" "}
-                        </TableCell>
-                      </TableRow>
-                    ))}
+                    {invoiceData &&
+                      invoiceData?.items?.map((itemField, index) => (
+                        <TableRow key={index}>
+                          <TableCell scope="row" style={{ width: "40%" }}>
+                            {" "}
+                            <InputBase
+                              style={{ width: "100%" }}
+                              outline="none"
+                              sx={{ ml: 1, flex: 1 }}
+                              type="text"
+                              name="itemName"
+                              value={itemField?.itemName}
+                              placeholder="Item name or description"
+                              readOnly
+                            />{" "}
+                          </TableCell>
+                          <TableCell align="right">
+                            {" "}
+                            <InputBase
+                              sx={{ ml: 1, flex: 1 }}
+                              type="number"
+                              name="quantity"
+                              value={itemField?.quantity}
+                              placeholder="0"
+                              readOnly
+                            />{" "}
+                          </TableCell>
+                          <TableCell align="right">
+                            {" "}
+                            <InputBase
+                              sx={{ ml: 1, flex: 1 }}
+                              type="number"
+                              name="unitPrice"
+                              value={itemField?.unitPrice}
+                              placeholder="0"
+                              readOnly
+                            />{" "}
+                          </TableCell>
+                          <TableCell align="right">
+                            {" "}
+                            <InputBase
+                              sx={{ ml: 1, flex: 1 }}
+                              type="number"
+                              name="discount"
+                              value={itemField?.discount}
+                              readOnly
+                            />{" "}
+                          </TableCell>
+                          <TableCell align="right">
+                            {" "}
+                            <InputBase
+                              sx={{ ml: 1, flex: 1 }}
+                              type="number"
+                              name="amount"
+                              value={
+                                itemField?.quantity * itemField.unitPrice -
+                                (itemField.quantity *
+                                  itemField.unitPrice *
+                                  itemField.discount) /
+                                  100
+                              }
+                              readOnly
+                            />{" "}
+                          </TableCell>
+                        </TableRow>
+                      ))}
                   </TableBody>
                 </Table>
               </TableContainer>

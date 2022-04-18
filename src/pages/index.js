@@ -6,4 +6,3 @@ export { default as AddClient } from "./invoice/AddClient";
 export { default as Invoices } from "./invoices/Invoices";
 export { default as Invoice } from "./invoice/Invoice";
 export { default as InvoiceDetail } from "./invoiceDetails/InvoiceDetail";
-export { default as Settings } from "./settings/Settings";
